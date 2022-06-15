@@ -1,0 +1,102 @@
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 337109 entries, 0 to 337108
+Data columns (total 95 columns):
+ #   Column                                                                    Non-Null Count   Dtype  
+---  ------                                                                    --------------   -----  
+ 0   Patient Age at Treatment                                                  337109 non-null  object 
+ 1   Date patient started trying to become pregnant OR date of last pregnancy  12274 non-null   float64
+ 2   Total Number of Previous cycles, Both IVF and DI                          337109 non-null  object 
+ 3   Total Number of Previous treatments, Both IVF and DI at clinic            337109 non-null  object 
+ 4   Total Number of Previous IVF cycles                                       337109 non-null  object 
+ 5   Total Number of Previous DI cycles                                        337109 non-null  object 
+ 6   Total number of previous pregnancies, Both IVF and DI                     337109 non-null  object 
+ 7   Total number of IVF pregnancies                                           337109 non-null  int64  
+ 8   Total number of DI pregnancies                                            337109 non-null  int64  
+ 9   Total number of live births - conceived through IVF or DI                 337109 non-null  object 
+ 10  Total number of live births - conceived through IVF                       337109 non-null  int64  
+ 11  Total number of live births - conceived through DI                        337109 non-null  int64  
+ 12  Type of Infertility - Female Primary                                      337109 non-null  int64  
+ 13  Type of Infertility - Female Secondary                                    337109 non-null  int64  
+ 14  Type of Infertility - Male Primary                                        337109 non-null  int64  
+ 15  Type of Infertility - Male Secondary                                      337109 non-null  int64  
+ 16  Type of Infertility -Couple Primary                                       337109 non-null  int64  
+ 17  Type of Infertility -Couple Secondary                                     337109 non-null  int64  
+ 18  Cause  of Infertility - Tubal disease                                     337109 non-null  int64  
+ 19  Cause of Infertility - Ovulatory Disorder                                 337109 non-null  int64  
+ 20  Cause of Infertility - Male Factor                                        337109 non-null  int64  
+ 21  Cause of Infertility - Patient Unexplained                                337109 non-null  int64  
+ 22  Cause of Infertility - Endometriosis                                      337109 non-null  int64  
+ 23  Cause of Infertility - Cervical factors                                   337109 non-null  int64  
+ 24  Cause of Infertility - Female Factors                                     337109 non-null  int64  
+ 25  Cause of Infertility - Partner Sperm Concentration                        337109 non-null  int64  
+ 26  Cause of Infertility -  Partner Sperm Morphology                          337109 non-null  int64  
+ 27  Causes of Infertility - Partner Sperm Motility                            337109 non-null  int64  
+ 28  Cause of Infertility -  Partner Sperm Immunological factors               337109 non-null  int64  
+ 29  Main Reason for Producing Embroys Storing Eggs                            315252 non-null  object 
+ 30  Stimulation used                                                          337109 non-null  int64  
+ 31  Type of Ovulation Induction                                               238234 non-null  object 
+ 32  Egg Donor Age at Registration                                             14169 non-null   object 
+ 33  Sperm Donor Age at Registration                                           40101 non-null   object 
+ 34  Donated embryo                                                            315252 non-null  float64
+ 35  Patient acting as Surrogate                                               315252 non-null  float64
+ 36  Type of treatment - IVF or DI                                             337109 non-null  object 
+ 37  Specific treatment type                                                   337107 non-null  object 
+ 38  PGD                                                                       315252 non-null  float64
+ 39  PGD treatment                                                             2541 non-null    float64
+ 40  PGS                                                                       1773 non-null    float64
+ 41  PGS Treatment                                                             1651 non-null    float64
+ 42  Elective Single Embryo Transfer                                           315252 non-null  float64
+ 43  Egg Source                                                                315252 non-null  object 
+ 44  Sperm From                                                                337109 non-null  object 
+ 45  Fresh Cycle                                                               315252 non-null  float64
+ 46  Frozen Cycle                                                              315252 non-null  float64
+ 47  Eggs Thawed                                                               315252 non-null  float64
+ 48  Fresh Eggs Collected                                                      315252 non-null  object 
+ 49  Fresh Eggs Stored                                                         315252 non-null  object 
+ 50  Total Eggs Mixed                                                          315252 non-null  object 
+ 51  Eggs Mixed With Partner Sperm                                             315252 non-null  object 
+ 52  Eggs Mixed With Donor sperm                                               315252 non-null  float64
+ 53  Total Embryos Created                                                     315252 non-null  object 
+ 54  Eggs Micro-injected                                                       315252 non-null  object 
+ 55  Embryos from Eggs Micro-injected                                          315252 non-null  float64
+ 56  Total Embryos Thawed                                                      315252 non-null  float64
+ 57  Embryos Transfered                                                        315252 non-null  float64
+ 58  Embryos Transfered from Eggs Micro-injected                               315252 non-null  float64
+ 59  Embryos Stored For Use By Patient                                         315252 non-null  object 
+ 60  Embryos (from Eggs Micro-injected) Stored For Use By Patient              315252 non-null  object 
+ 61  Date of Egg Collection                                                    241951 non-null  float64
+ 62  Date of Egg Thawing                                                       845 non-null     float64
+ 63  Date of Egg Mixing                                                        231252 non-null  float64
+ 64  Date of Embryo Thawing                                                    63372 non-null   float64
+ 65  Date of Embryo Transfer                                                   266551 non-null  float64
+ 66  Year of Treatment                                                         337109 non-null  int64  
+ 67  Live Birth Occurrence                                                     81128 non-null   float64
+ 68  Number of Live Births                                                     337109 non-null  int64  
+ 69  Early Outcome                                                             288939 non-null  object 
+ 70  Number of foetal sacs with fetal pulsation                                337109 non-null  int64  
+ 71  Heart One Weeks Gestation                                                 79351 non-null   object 
+ 72  Heart One Birth Outcome                                                   92060 non-null   object 
+ 73  Heart One Birth Weight                                                    78998 non-null   object 
+ 74  Heart OneSex                                                              79532 non-null   object 
+ 75  Heart One Delivery Date                                                   79470 non-null   float64
+ 76  Heart One Birth Congenital Abnormalities                                  0 non-null       float64
+ 77  Heart Two Weeks Gestation                                                 14616 non-null   object 
+ 78  Heart Two Birth Outcome                                                   16724 non-null   object 
+ 79  Heart Two Birth Weight                                                    14453 non-null   object 
+ 80  Heart Two Sex                                                             14623 non-null   object 
+ 81  Heart Two Delivery Date                                                   14589 non-null   float64
+ 82  Heart Two Birth Congenital Abnormalities                                  0 non-null       float64
+ 83  Heart Three Weeks Gestation                                               380 non-null     object 
+ 84  Heart Three Birth Outcome                                                 534 non-null     object 
+ 85  Heart Three Birth Weight                                                  368 non-null     object 
+ 86  Heart Three Sex                                                           378 non-null     object 
+ 87  Heart Three Delivery Date                                                 376 non-null     float64
+ 88  Heart Three Birth Congenital Abnormalities                                0 non-null       float64
+ 89  Heart Four Weeks Gestation                                                2 non-null       object 
+ 90  Heart Four Birth Outcome                                                  7 non-null       object 
+ 91  Heart Four Birth Weight                                                   2 non-null       object 
+ 92  Heart Four Sex                                                            2 non-null       object 
+ 93  Heart Four Delivery Date                                                  2 non-null       float64
+ 94  Heart Four Birth Congenital Abnormalities                                 0 non-null       float64
+dtypes: float64(30), int64(25), object(40)
+memory usage: 244.3+ MB
