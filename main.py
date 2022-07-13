@@ -10,7 +10,7 @@ from streamlit.logger import get_logger
 def main_predict(txtfile, model, threshold):
     txtfile = txtfile[[txtfile.columns[1]]]
     txtfile = np.asarray(txtfile).astype(np.float32).T
-    txtfile = txtfile.reshape(-1, 24)
+    txtfile = txtfile.reshape(-1, 23)
     code2rel = {0: 'Tidak berhasil', 1: 'Berhasil'}
     
     proba = model.predict(txtfile)
@@ -163,7 +163,7 @@ def run():
 "Type of Infertility - Female Secondary", "Type of Infertility - Male Primary","Type of Infertility - Male Secondary","Type of Infertility -Couple Primary","Type of Infertility -Couple Secondary",
 "Cause  of Infertility - Tubal disease", "Cause of Infertility - Ovulatory Disorder","Cause of Infertility - Male Factor","Cause of Infertility - Patient Unexplained","Cause of Infertility - Endometriosis",
 "Cause of Infertility - Cervical factors","Cause of Infertility - Female Factors","Cause of Infertility - Partner Sperm Concentration","Cause of Infertility -  Partner Sperm Morphology","Causes of Infertility - Partner Sperm Motility","Cause of Infertility -  Partner Sperm Immunological factors",
-"Embryos Transfered","Specific treatment type","Total Embryos Created" ]
+"Embryos Transfered","Total Embryos Created" ]
 
     
     
@@ -171,7 +171,7 @@ def run():
     if st.button('Predict'):
         txtf = {"14":name_txtfile,"unnamed":val_txtfile, }
         txtfile = pd.DataFrame(txtf)
-        txtfile.to_csv('app/txtfile.txt')
+        
         output_txt, proba = main_predict(txtfile, model, threshold)
         st.metric(label="Live-birth Occurence Expectancy", value=proba, delta=output_txt, delta_color="inverse")
 
