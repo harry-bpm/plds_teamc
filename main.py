@@ -19,8 +19,8 @@ def main_predict(txtfile, model, threshold):
     output_txt = code2rel[predict]
     return output_txt, proba
 
-model = keras.models.load_model('app/model/')
-threshold = joblib.load('app/model/acc_threshold.pkl')
+model = keras.models.load_model('model/')
+threshold = joblib.load('model/acc_threshold.pkl')
 
 
 
@@ -41,8 +41,25 @@ def run():
     col1, col2, col3, col4 = st.columns(4)
     col1.subheader("   General")
     with col1:
-        
         age_at_treatment_status = st.select_slider('Select age range', options=['18-34', '35-37', '38-39', '40-42', '43-44', '45-50'])
+        both_ivf_di = st.number_input( "Total Number of Previous cycles, Both IVF and DI")
+        both_ivf_di = st.number_input( "Total Number of Previous cycles, Both IVF and DI")
+        number_of_ivf_pregnancies = st.number_input( "Total number of IVF pregnancies ")
+
+        stimulation_used_status = st.checkbox( "Stimulation used ")
+        fresh_cycle_status  = st.checkbox("Fresh Cycle" )
+        frozen_cycle_status  = st.checkbox("Frozen Cycle" )
+        egg_source_status = st.radio("Egg Source" , ('Patient', 'Donor'))
+        sprem_from_status  = st.radio("Sperm From" ,('Patient', 'Donor'))
+
+        live_birth_ivf = st.number_input( "Total number of live births - conceived through IVF ")  
+        eggs_mixed_sperm  = st.number_input("Eggs Mixed With Partner Sperm" )
+        eggs_thawed  = st.number_input("Eggs Thawed" )
+        embryos_transfer  = st.number_input("Embryos Transfered" )
+        eggs_collected  = st.number_input("Fresh Eggs Collected" )
+
+
+
         if age_at_treatment_status=="18-34":
             age_at_treatment=0
         elif age_at_treatment_status=="35-37":
@@ -56,31 +73,15 @@ def run():
         else:
             age_at_treatment=5
 
-        stimulation_used_status = st.checkbox( "Stimulation used ")
-        fresh_cycle_status  = st.checkbox("Fresh Cycle" )
-        frozen_cycle_status  = st.checkbox("Frozen Cycle" )
-        egg_source_status = st.radio("Egg Source" , ('Patient', 'Donor'))
-        sprem_from_status  = st.radio("Sperm From" ,('Patient', 'Donor'))
-
         stimulation_used=1 if stimulation_used_status else 0
         fresh_cycle=1 if fresh_cycle_status else 0
         frozen_cycle=1 if frozen_cycle_status else 0
         egg_source=1 if egg_source_status=='Patient' else 0
         sprem_from=1 if sprem_from_status=='Patient' else 0
     
-    col2.subheader("Information   ")
+
+    col2.subheader("Type of Infertility")
     with col2:
-        both_ivf_di = st.number_input( "Total Number of Previous cycles, Both IVF and DI")
-        number_of_ivf_pregnancies = st.number_input( "Total number of IVF pregnancies ")
-        live_birth_ivf = st.number_input( "Total number of live births - conceived through IVF ")  
-        eggs_mixed_sperm  = st.number_input("Eggs Mixed With Partner Sperm" )
-        eggs_thawed  = st.number_input("Eggs Thawed" )
-        embryos_transfer  = st.number_input("Embryos Transfered" )
-        eggs_collected  = st.number_input("Fresh Eggs Collected" )
-
-
-    col3.subheader("Type of Infertility")
-    with col3:
         female_primary_status = st.checkbox( "Female Primary" )
         female_secondary_status = st.checkbox( "Female Secondary ")
         male_primary_status = st.checkbox( "Male Primary" )
@@ -95,8 +96,8 @@ def run():
         male_secondary=1 if male_secondary_status else 0
         couple_primary=1 if couple_primary_status else 0
  
-    col4.subheader("Cause of Infertility")
-    with col4:    
+    col3.subheader("Cause of Infertility")
+    with col3:    
         tubal_disease_status = st.checkbox( "Tubal disease" )
         ovulatory_disorder_status = st.checkbox( "Ovulatory Disorder" )
         male_factor_status = st.checkbox( "Male Factor" )
