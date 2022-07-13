@@ -8,9 +8,9 @@ from streamlit.logger import get_logger
 
 
 def main_predict(txtfile, model, threshold):
-    #txtfile = txtfile[[txtfile.columns[1]]]
-    #txtfile = np.asarray(txtfile).astype(np.float32).T
-    #txtfile = txtfile.reshape(-1, 30)
+    txtfile = txtfile[[txtfile.columns[1]]]
+    txtfile = np.asarray(txtfile).astype(np.float32).T
+    txtfile = txtfile.reshape(-1, 24)
     code2rel = {0: 'Tidak berhasil', 1: 'Berhasil'}
     
     proba = model.predict(txtfile)
@@ -169,9 +169,9 @@ def run():
     
 
     if st.button('Predict'):
-        #txtf = {"14":name_txtfile,"unnamed":val_txtfile, }
-        txtfile = pd.DataFrame(val_txtfile)
-        #txtfile.to_csv('app/txtfile.txt')
+        txtf = {"14":name_txtfile,"unnamed":val_txtfile, }
+        txtfile = pd.DataFrame(txtf)
+        txtfile.to_csv('app/txtfile.txt')
         output_txt, proba = main_predict(txtfile, model, threshold)
         st.metric(label="Live-birth Occurence Expectancy", value=proba, delta=output_txt, delta_color="inverse")
 
