@@ -8,14 +8,14 @@ from streamlit.logger import get_logger
 
 
 def main_predict(txtfile, model, threshold):
-    txtfile = txtfile[[txtfile.columns[1]]]
-    txtfile = np.asarray(txtfile).astype(np.float32).T
-    txtfile = txtfile.reshape(-1, 30)
+    #txtfile = txtfile[[txtfile.columns[1]]]
+    #txtfile = np.asarray(txtfile).astype(np.float32).T
+    #txtfile = txtfile.reshape(-1, 30)
     code2rel = {0: 'Tidak berhasil', 1: 'Berhasil'}
     
     proba = model.predict(txtfile)
     predict = 1 if proba > threshold else 0
-    #print(f"{code2rel[predict]}, dengan akurasi {str(proba)[2:-2]}")
+    print(f"{code2rel[predict]}, dengan akurasi {str(proba)[2:-2]}")
     output_txt = code2rel[predict]
     return output_txt, proba
 
@@ -38,27 +38,15 @@ def run():
     expander.write("""
       Please fill in the following forms based on current medical status. Unknown information can be filled in by 0. Press the "predict" button to show the prediction result. """)
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.subheader("   General")
+    col1, col2, col3 = st.columns(3)
+    col1.subheader("General Information")
     with col1:
         age_at_treatment_status = st.select_slider('Select age range', options=['18-34', '35-37', '38-39', '40-42', '43-44', '45-50'])
-        both_ivf_di = st.number_input( "Total Number of Previous cycles, Both IVF and DI")
-        both_ivf_di = st.number_input( "Total Number of Previous cycles, Both IVF and DI")
-        number_of_ivf_pregnancies = st.number_input( "Total number of IVF pregnancies ")
-
-        stimulation_used_status = st.checkbox( "Stimulation used ")
-        fresh_cycle_status  = st.checkbox("Fresh Cycle" )
-        frozen_cycle_status  = st.checkbox("Frozen Cycle" )
-        egg_source_status = st.radio("Egg Source" , ('Patient', 'Donor'))
-        sprem_from_status  = st.radio("Sperm From" ,('Patient', 'Donor'))
-
-        live_birth_ivf = st.number_input( "Total number of live births - conceived through IVF ")  
-        eggs_mixed_sperm  = st.number_input("Eggs Mixed With Partner Sperm" )
-        eggs_thawed  = st.number_input("Eggs Thawed" )
-        embryos_transfer  = st.number_input("Embryos Transfered" )
-        eggs_collected  = st.number_input("Fresh Eggs Collected" )
-
-
+        no_prev_treatment_status = st.select_slider( "Total Number of Previous treatments, Both IVF and DI at clinic", options=['0', '1', '2', '3', '4', '5','>5'])
+        no_ivf_pregnancy_status = st.select_slider("Total number of IVF pregnancies", options=['0', '1', '2', '3', '4', '5'])
+        no_prev_ivf_cycle_status = st.select_slider("Total Number of Previous IVF cycles", options=['0', '1', '2', '3', '4', '5','>5'])
+        embryos_transfer_status  = st.select_slider("Embryos Transfered" , options=['0', '1', '2', '3'])
+        total_embryo = st.number_input( "Total Number of Previous cycles, Both IVF and DI")
 
         if age_at_treatment_status=="18-34":
             age_at_treatment=0
@@ -73,11 +61,58 @@ def run():
         else:
             age_at_treatment=5
 
-        stimulation_used=1 if stimulation_used_status else 0
-        fresh_cycle=1 if fresh_cycle_status else 0
-        frozen_cycle=1 if frozen_cycle_status else 0
-        egg_source=1 if egg_source_status=='Patient' else 0
-        sprem_from=1 if sprem_from_status=='Patient' else 0
+        if no_prev_treatment_status=="0":
+            no_prev_treatment=0
+        elif no_prev_treatment_status=="1":
+            no_prev_treatment=1
+        elif no_prev_treatment_status=="2":
+            no_prev_treatment=2
+        elif no_prev_treatment_status=="3":
+            no_prev_treatment=3
+        elif no_prev_treatment_status=="4":
+            no_prev_treatment=4
+        elif no_prev_treatment_status=="5":
+            no_prev_treatment=5
+        else:
+            age_at_treatment=6
+        
+        if no_prev_ivf_cycle_status=="0":
+            no_prev_ivf_cycle=0
+        elif no_prev_ivf_cycle_status=="1":
+            no_prev_ivf_cycle=1
+        elif no_prev_ivf_cycle_status=="2":
+            no_prev_ivf_cycle=2
+        elif no_prev_ivf_cycle_status=="3":
+            no_prev_ivf_cycle=3
+        elif no_prev_ivf_cycle_status=="4":
+            no_prev_ivf_cycle=4
+        elif no_prev_ivf_cycle_status=="5":
+            no_prev_ivf_cycle=5
+        else:
+            no_prev_ivf_cycle=6
+
+        if no_ivf_pregnancy_status=="0":
+            no_ivf_pregnancy=0
+        elif no_ivf_pregnancy_status=="1":
+            no_ivf_pregnancy=1
+        elif no_ivf_pregnancy_status=="2":
+            no_ivf_pregnancy=2
+        elif no_ivf_pregnancy_status=="3":
+            no_ivf_pregnancy=3
+        elif no_ivf_pregnancy_status=="4":
+            no_ivf_pregnancy=4
+        else:
+            no_ivf_pregnancy=5
+
+        if embryos_transfer_status=="0":
+            embryos_transfer=0
+        elif embryos_transfer_status=="1":
+            embryos_transfer=1
+        elif embryos_transfer_status=="2":
+            embryos_transfer=2
+        else:
+            embryos_transfer=3
+
     
 
     col2.subheader("Type of Infertility")
@@ -123,20 +158,20 @@ def run():
         partner_sperm_immunological=1 if partner_sperm_immunological_status else 0
         
      
-    val_txtfile =[age_at_treatment, both_ivf_di, number_of_ivf_pregnancies, live_birth_ivf, female_primary, female_secondary, male_primary, male_secondary, couple_primary, couple_secondary, tubal_disease, ovulatory_disorder, male_factor,  patient_unexplained, endometriosis, cervical_factors,female_factors, partner_sperm_concentration, partner_sperm_morphology, partner_sperm_motility,   partner_sperm_immunological,stimulation_used, egg_source, sprem_from, fresh_cycle, frozen_cycle, eggs_mixed_sperm, eggs_thawed, embryos_transfer, eggs_collected]
-    name_txtfile =["Patient Age at Treatment","Total Number of Previous cycles, Both IVF and DI", "Total number of IVF pregnancies","Total number of live births - conceived through IVF","Type of Infertility - Female Primary",
-    "Type of Infertility - Female Secondary", "Type of Infertility - Male Primary","Type of Infertility - Male Secondary","Type of Infertility -Couple Primary","Type of Infertility -Couple Secondary",
-    "Cause  of Infertility - Tubal disease", "Cause of Infertility - Ovulatory Disorder","Cause of Infertility - Male Factor","Cause of Infertility - Patient Unexplained","Cause of Infertility - Endometriosis",
-    "Cause of Infertility - Cervical factors","Cause of Infertility - Female Factors","Cause of Infertility - Partner Sperm Concentration","Cause of Infertility -  Partner Sperm Morphology","Causes of Infertility - Partner Sperm Motility","Cause of Infertility -  Partner Sperm Immunological factors",
-    "Stimulation used","Egg Source","Sperm From","Fresh Cycle","Frozen Cycle","Eggs Mixed With Partner Sperm","Eggs Thawed","Embryos Transfered","Fresh Eggs Collected"]
+    val_txtfile =[age_at_treatment, no_prev_treatment, no_prev_ivf_cycle, no_ivf_pregnancy,  female_primary, female_secondary, male_primary, male_secondary, couple_primary, couple_secondary, tubal_disease, ovulatory_disorder, male_factor,  patient_unexplained, endometriosis, cervical_factors,female_factors, partner_sperm_concentration, partner_sperm_morphology, partner_sperm_motility,   partner_sperm_immunological, embryos_transfer, total_embryo ]
+    name_txtfile =["Patient Age at Treatment", "Total Number of Previous treatments, Both IVF and DI at clinic", "Total Number of Previous IVF cycles","Total number of IVF pregnancies","Type of Infertility - Female Primary",
+"Type of Infertility - Female Secondary", "Type of Infertility - Male Primary","Type of Infertility - Male Secondary","Type of Infertility -Couple Primary","Type of Infertility -Couple Secondary",
+"Cause  of Infertility - Tubal disease", "Cause of Infertility - Ovulatory Disorder","Cause of Infertility - Male Factor","Cause of Infertility - Patient Unexplained","Cause of Infertility - Endometriosis",
+"Cause of Infertility - Cervical factors","Cause of Infertility - Female Factors","Cause of Infertility - Partner Sperm Concentration","Cause of Infertility -  Partner Sperm Morphology","Causes of Infertility - Partner Sperm Motility","Cause of Infertility -  Partner Sperm Immunological factors",
+"Embryos Transfered","Specific treatment type","Total Embryos Created" ]
 
     
     
 
     if st.button('Predict'):
-        txtf = {"14":name_txtfile,"unnamed":val_txtfile, }
-        txtfile = pd.DataFrame(txtf)
-        txtfile.to_csv('app/txtfile.txt')
+        #txtf = {"14":name_txtfile,"unnamed":val_txtfile, }
+        txtfile = pd.DataFrame(val_txtfile)
+        #txtfile.to_csv('app/txtfile.txt')
         output_txt, proba = main_predict(txtfile, model, threshold)
         st.metric(label="Live-birth Occurence Expectancy", value=proba, delta=output_txt, delta_color="inverse")
 
