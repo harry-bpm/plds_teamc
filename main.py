@@ -38,7 +38,7 @@ def run():
     expander.write("""
       Please fill in the following forms based on current medical status. Unknown information can be filled in by 0. Press the "predict" button to show the prediction result. """)
 
-    with st.form("my_form"):
+    with st.form(key='columns_in_form'):
         col1, col2, col3 = st.columns(3)
         col1.subheader("General Information")
         with col1:
@@ -118,12 +118,12 @@ def run():
 
         col2.subheader("Type of Infertility")
         with col2:
-            female_primary_status = form.checkbox( "Female Primary" )
-            female_secondary_status = form.checkbox( "Female Secondary ")
-            male_primary_status = form.checkbox( "Male Primary" )
-            male_secondary_status = form.checkbox( "Male Secondary" )
-            couple_primary_status = form.checkbox( "Couple Primary" )
-            couple_secondary_status = form.checkbox( "Couple Secondary" )
+            female_primary_status = st.checkbox( "Female Primary" )
+            female_secondary_status = st.checkbox( "Female Secondary ")
+            male_primary_status = st.checkbox( "Male Primary" )
+            male_secondary_status = st.checkbox( "Male Secondary" )
+            couple_primary_status = st.checkbox( "Couple Primary" )
+            couple_secondary_status = st.checkbox( "Couple Secondary" )
 
             couple_secondary=1 if couple_secondary_status else 0
             female_primary=1 if female_primary_status else 0
@@ -134,17 +134,17 @@ def run():
     
         col3.subheader("Cause of Infertility")
         with col3:    
-            tubal_disease_status = form.checkbox( "Tubal disease" )
-            ovulatory_disorder_status = form.checkbox( "Ovulatory Disorder" )
-            male_factor_status = form.checkbox( "Male Factor" )
-            patient_unexplained_status = form.checkbox( "Patient Unexplained" )
-            endometriosis_status = form.checkbox( "Endometriosis ")
-            cervical_factors_status = form.checkbox( "Cervical factors ")
-            female_factors_status = form.checkbox( "Female Factors" )
-            partner_sperm_concentration_status = form.checkbox( "Partner Sperm Concentration" )
-            partner_sperm_morphology_status = form.checkbox( "Partner Sperm Morphology" )
-            partner_sperm_motility_status = form.checkbox( " Partner Sperm Motility ")
-            partner_sperm_immunological_status = form.checkbox("Partner Sperm Immunological factors" )
+            tubal_disease_status = st.checkbox( "Tubal disease" )
+            ovulatory_disorder_status = st.checkbox( "Ovulatory Disorder" )
+            male_factor_status = st.checkbox( "Male Factor" )
+            patient_unexplained_status = st.checkbox( "Patient Unexplained" )
+            endometriosis_status = st.checkbox( "Endometriosis ")
+            cervical_factors_status = st.checkbox( "Cervical factors ")
+            female_factors_status = st.checkbox( "Female Factors" )
+            partner_sperm_concentration_status = st.checkbox( "Partner Sperm Concentration" )
+            partner_sperm_morphology_status = st.checkbox( "Partner Sperm Morphology" )
+            partner_sperm_motility_status = st.checkbox( " Partner Sperm Motility ")
+            partner_sperm_immunological_status = st.checkbox("Partner Sperm Immunological factors" )
 
             tubal_disease=1 if tubal_disease_status else 0
             ovulatory_disorder=1 if ovulatory_disorder_status else 0
