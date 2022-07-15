@@ -4,7 +4,7 @@ import sklearn
 import joblib
 from tensorflow import keras
 import streamlit as st
-from streamlit.logger import get_logger
+#from streamlit.logger import get_logger
 
 
 def main_predict(txtfile, model, threshold):
@@ -14,7 +14,7 @@ def main_predict(txtfile, model, threshold):
     code2rel = {0: 'Tidak berhasil', 1: 'Berhasil'}
     
     proba_val = model.predict(txtfile)
-    proba = (np.round(proba_val, 2))*100
+    proba = (np.round(proba_val, 2))
     proba = str(proba)+"%"
     predict = 1 if proba_val > threshold else 0
     #print(f"{code2rel[predict]}, dengan akurasi {str(proba)[2:-2]}")
@@ -52,11 +52,11 @@ def run():
 
     )
     expander2 = st.expander("Quick guide")
-    expander2.markdown("""
+    expander2.write("""
       Please fill in the following forms based on the medical record.
-      ⋅⋅* Slide the slider button to input the data. 
-      ⋅⋅* To input a number in the form, type the number followed by the "enter" button.
-      ⋅⋅* Tick the checkbox to indicate a positive response. 
+      - Slide the slider button to input the data. 
+      - To input a number in the form, type the number followed by the "enter" button.
+      - Tick the checkbox to indicate a positive response. 
       
       Press the "predict" button to show the prediction result.
       
@@ -203,8 +203,8 @@ def run():
             txtfile = pd.DataFrame(txtf)
             
             output_txt, proba = main_predict(txtfile, model, threshold)
-            st.metric(label="Live-birth Occurrence Expectancy", value=proba, delta=output_txt, delta_color="off")
-
+            #st.metric(label="Live-birth Occurrence Expectancy", value=proba, delta=output_txt, delta_color="off")
+            st.metric(label="Live-birth Occurrence Expectancy", value=proba)
 
 if __name__ == "__main__":
     run()
