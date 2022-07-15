@@ -13,9 +13,11 @@ def main_predict(txtfile, model, threshold):
     txtfile = txtfile.reshape(-1, 23)
     code2rel = {0: 'Tidak berhasil', 1: 'Berhasil'}
     
-    proba = model.predict(txtfile)
-    predict = 1 if proba > threshold else 0
-    print(f"{code2rel[predict]}, dengan akurasi {str(proba)[2:-2]}")
+    proba_val = model.predict(txtfile)
+    proba = (np.round(proba_val, 2))*100
+    proba = str(proba)+"%"
+    predict = 1 if proba_val > threshold else 0
+    #print(f"{code2rel[predict]}, dengan akurasi {str(proba)[2:-2]}")
     output_txt = code2rel[predict]
     return output_txt, proba
 
@@ -27,19 +29,41 @@ threshold = joblib.load('model/acc_threshold.pkl')
 
 def run():
     st.set_page_config(
-        page_title="Live-birt Occurence Prediction",
+        page_title="Live-birth Occurrence Prediction",
         page_icon="👶",
     )
 
-    st.title("A Simple Web Application for Predicting Live-birth Occurence")
-    st.write("Some text goes here")
+    st.title("A Simple Web App for Predicting Live-birth Occurence")
+    st.write("""Predict the live-birth occurrence before in-vitro fertilization (IVF) treatment using machine learning. 
+    Get another opinion based on the medical records, or simply save cost and procedures before going into any IVF procedures 
+    
+    """)
 
-    expander = st.expander("How to Use")
-    expander.write("""
-      Please fill in the following forms based on current medical status. Unknown information can be filled in by 0. Press the "predict" button to show the prediction result. """)
+    expander1 = st.expander("About this app")
+    expander1.write("""
+    This app was created for educational purposes only. Prediction result is generated based on a deep learning model trained using the dataset taken from Human Fertilisation & Embryology Authority. The model itself could be changed in the future for a better prediction result. 
+    Hence, it is strongly advised not to take the prediction result as the main reason for deciding any actions regarding the IVF treatment.
+
+    We only consider the patients that will receive the IVF treatment to receive some stimulation. Features needed to train the model are selected based on the recommendation from a physician's review of the following paper: "A systematic review of the quality of clinical prediction models in in-vitro fertilization".
+    The input required to get the prediction result consists of those selected features.
+
+    For more details/inquiries, contact: @harry-bpm at github
+    """
+
+    )
+    expander2 = st.expander("Quick guide")
+    expander2.markdown("""
+      Please fill in the following forms based on the medical record.
+      ⋅⋅* Slide the slider button to input the data. 
+      ⋅⋅* To input a number in the form, type the number followed by the "enter" button.
+      ⋅⋅* Tick the checkbox to indicate a positive response. 
+      
+      Press the "predict" button to show the prediction result.
+      
+      """)
 
     with st.form(key='columns_in_form'):
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
         col1.subheader("General Information")
         with col1:
             age_at_treatment_status = st.select_slider('Select age range', options=['18-34', '35-37', '38-39', '40-42', '43-44', '45-50'])
@@ -47,7 +71,7 @@ def run():
             no_ivf_pregnancy_status = st.select_slider("Total number of IVF pregnancies", options=['0', '1', '2', '3', '4', '5'])
             no_prev_ivf_cycle_status = st.select_slider("Total Number of Previous IVF cycles", options=['0', '1', '2', '3', '4', '5','>5'])
             embryos_transfer_status  = st.select_slider("Embryos Transfered" , options=['0', '1', '2', '3'])
-            total_embryo = st.number_input( "Total Number of Previous cycles, Both IVF and DI")
+            total_embryo = st.number_input( "Total Embryos Created")
 
             if age_at_treatment_status=="18-34":
                 age_at_treatment=0
@@ -132,13 +156,23 @@ def run():
             male_secondary=1 if male_secondary_status else 0
             couple_primary=1 if couple_primary_status else 0
     
-        col3.subheader("Cause of Infertility")
+        col3.subheader("Cause of Infertility I")
         with col3:    
             tubal_disease_status = st.checkbox( "Tubal disease" )
             ovulatory_disorder_status = st.checkbox( "Ovulatory Disorder" )
             male_factor_status = st.checkbox( "Male Factor" )
             patient_unexplained_status = st.checkbox( "Patient Unexplained" )
             endometriosis_status = st.checkbox( "Endometriosis ")
+
+            tubal_disease=1 if tubal_disease_status else 0
+            ovulatory_disorder=1 if ovulatory_disorder_status else 0
+            male_factor=1 if male_factor_status else 0
+            patient_unexplained=1 if patient_unexplained_status else 0
+            endometriosis=1 if endometriosis_status else 0
+
+
+        col4.subheader("Cause of Infertility II")
+        with col4:  
             cervical_factors_status = st.checkbox( "Cervical factors ")
             female_factors_status = st.checkbox( "Female Factors" )
             partner_sperm_concentration_status = st.checkbox( "Partner Sperm Concentration" )
@@ -146,11 +180,6 @@ def run():
             partner_sperm_motility_status = st.checkbox( " Partner Sperm Motility ")
             partner_sperm_immunological_status = st.checkbox("Partner Sperm Immunological factors" )
 
-            tubal_disease=1 if tubal_disease_status else 0
-            ovulatory_disorder=1 if ovulatory_disorder_status else 0
-            male_factor=1 if male_factor_status else 0
-            patient_unexplained=1 if patient_unexplained_status else 0
-            endometriosis=1 if endometriosis_status else 0
             cervical_factors=1 if cervical_factors_status else 0
             female_factors=1 if female_factors_status else 0
             partner_sperm_concentration=1 if partner_sperm_concentration_status else 0
@@ -174,7 +203,7 @@ def run():
             txtfile = pd.DataFrame(txtf)
             
             output_txt, proba = main_predict(txtfile, model, threshold)
-            st.metric(label="Live-birth Occurence Expectancy", value=proba, delta=output_txt, delta_color="inverse")
+            st.metric(label="Live-birth Occurrence Expectancy", value=proba, delta=output_txt, delta_color="off")
 
 
 if __name__ == "__main__":
