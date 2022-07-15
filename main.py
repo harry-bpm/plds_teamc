@@ -14,8 +14,10 @@ def main_predict(txtfile, model, threshold):
     code2rel = {0: 'Tidak berhasil', 1: 'Berhasil'}
     
     proba_val = model.predict(txtfile)
-    proba = (np.round(proba_val, 2))
-    proba = str(proba)+"%"
+    
+    proba = proba_val*100
+    np.set_printoptions(precision=2)
+    proba = str(proba)[2:-2]+"%"
     predict = 1 if proba_val > threshold else 0
     #print(f"{code2rel[predict]}, dengan akurasi {str(proba)[2:-2]}")
     output_txt = code2rel[predict]
